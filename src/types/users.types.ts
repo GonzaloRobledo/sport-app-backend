@@ -1,11 +1,6 @@
-import { Types } from 'mongoose'
+import { GlobalMongoDBType, MongooseIdType } from './globals.types'
 
-export type MongooseIdType = Types.ObjectId | string
-
-export type UserTypeDB = {
-  _id: MongooseIdType
-  createdAt: any
-  updatedAt: any
+export type UserTypeDB = GlobalMongoDBType & {
   name: string
   lastName: string
   password: string

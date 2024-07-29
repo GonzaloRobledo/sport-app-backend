@@ -6,6 +6,7 @@ import cors from 'cors'
 import { AuthRoute } from './routes/auth.route'
 import cookieParser from 'cookie-parser'
 import { connectionMongoDB } from './config/mongodb'
+import { CourtRoute } from './routes/court.route'
 
 const app = express()
 
@@ -14,8 +15,9 @@ app.use(express.json())
 app.use(cookieParser())
 
 /**ROUTES**/
-
-app.use('/api', new AuthRoute('/auth').router)
+const FIX = '/api'
+app.use(FIX, new AuthRoute('/auth').router)
+app.use(FIX, new CourtRoute('/courts').router)
 
 /**======**/
 
