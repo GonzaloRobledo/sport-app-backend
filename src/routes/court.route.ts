@@ -14,7 +14,7 @@ export class CourtRoute {
     this.manageRoutes()
   }
 
-  manageRoutes () {
+  private manageRoutes () {
     this.router.get(COURTS_ENDPOINTS.GET_ALL, CourtController.getAll)
 
     this.router.post(

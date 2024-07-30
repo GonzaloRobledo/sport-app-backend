@@ -11,7 +11,7 @@ export class AuthRoute {
     this.manageRoutes()
   }
 
-  manageRoutes () {
+  private manageRoutes () {
     this.router.post(
       AUTH_ENDPOINTS.LOGIN,
       AuthMiddleware.loginValidate,
