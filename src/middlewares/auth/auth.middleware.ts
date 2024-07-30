@@ -57,9 +57,9 @@ export class AuthMiddleware {
 
       if (!validateToken) throw 'Invalid token!'
 
-      const { name, lastName, email, phone }: any = validateToken
+      const { email }: any = validateToken
 
-      req.body = { name, lastName, email, phone }
+      req.body = { ...req.body, user_email: email }
 
       next()
     } catch (e) {
@@ -76,17 +76,15 @@ export class AuthMiddleware {
     try {
       const cookies = req.cookies
 
-      console.log(cookies)
-
       const validateToken = Token.verify(cookies.token)
 
       if (!validateToken) throw 'Invalid token!'
 
-      const { name, lastName, email, phone, role }: any = validateToken
+      const { email, role }: any = validateToken
 
-      if (role !== 'admin') throw "Role isn't admin!"
+      if (role !== 'admin') throw 'You need admin permissions to do this action'
 
-      req.body = { name, lastName, email, phone }
+      req.body = { ...req.body, user_email: email }
 
       next()
     } catch (e) {

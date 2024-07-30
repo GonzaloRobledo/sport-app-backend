@@ -1,8 +1,8 @@
 import { AuthController } from '../controllers/auth.ctrl'
+import { AUTH_ENDPOINTS } from '../globals/endpointsRoutes'
 import { AuthMiddleware } from '../middlewares/auth/auth.middleware'
 
 import { Router } from 'express'
-import { AUTH_ENDPOINTS } from './constants'
 
 export class AuthRoute {
   public router = Router()

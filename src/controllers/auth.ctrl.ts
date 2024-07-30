@@ -76,7 +76,7 @@ export class AuthController {
 
       if (!responseCreateUser.ok) return responseCreateUser.error
 
-      const token = await Token.sign({
+      const token = Token.sign({
         data: {
           name: body.name,
           lastName: body.lastName,
@@ -99,11 +99,15 @@ export class AuthController {
     }
   }
 
-  public static verifySession (req: Request, res: Response) {
+  public static async verifySession (req: Request, res: Response) {
     try {
-      const { body } = req
+      const response = await UsersModel.getOneByEmail(req.body.user_email)
 
-      res.send({ ok: true, data: body })
+      if (!response.ok) return res.send(response)
+
+      const { email, name, lastName, role } = response.data!
+
+      res.send({ ok: true, data: { email, name, lastName, role } })
     } catch (e) {
       console.log('Error', e)
       res.status(500).send({ ok: false, error: e || 'Server error' })

@@ -68,7 +68,7 @@ export class CourtController {
   public static async addImage (req: Request, res: Response) {
     try {
       const { file } = req
-      const { id } = req.body
+      const { id }: any = req.query
 
       if (!id) return res.send({ ok: false, error: 'Id is required' })
 
@@ -104,12 +104,15 @@ export class CourtController {
 
   public static async deleteImage (req: Request, res: Response) {
     try {
+      console.log('DELETE IMAGE')
       const { imageId, id }: any = req.query
 
       if (!id) return res.send({ ok: false, error: 'Court ID is required' })
 
       if (!imageId)
         return res.send({ ok: false, error: 'Image ID is required' })
+
+      console.log({ imageId, id })
 
       const cloudinary = Cloudinary.createInstance()
 
@@ -139,7 +142,7 @@ export class CourtController {
       if (!id) return res.send({ ok: false, error: 'Id is required' })
 
       if (Object.keys(req.body).length == 0)
-        return { ok: false, error: 'There is not params to edit' }
+        return res.send({ ok: false, error: 'There is not params to edit' })
 
       const response = await CourtsModel.updateOne({ id, data: req.body })
 
