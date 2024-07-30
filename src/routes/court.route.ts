@@ -2,47 +2,42 @@ import { MethodsRoutes } from '../classes/methodRoutes.class'
 import { Multer } from '../classes/multer.class'
 import { CourtController } from '../controllers/court.ctrl'
 import { CourtsMiddleware } from '../middlewares/courts/courts.middleware'
+import { Router } from 'express'
+import { COURTS_ENDPOINTS } from './constants'
 
 const multer = new Multer()
 
-export class CourtRoute extends MethodsRoutes {
-  public router = this.rt
+export class CourtRoute {
+  public router = Router()
 
-  public constructor (startRoute: string = '') {
-    super(startRoute)
+  public constructor () {
     this.manageRoutes()
   }
 
   manageRoutes () {
-    this.GET({
-      startWith: '/getAll',
-      func: CourtController.getAll
-    })
-    this.POST({
-      startWith: `/create`,
-      func: CourtController.createOne,
-      middlewares: [
-        multer.getUpload().single('image'),
-        CourtsMiddleware.createValidate
-      ]
-    })
-    this.DELETE({
-      startWith: '/delete',
-      func: CourtController.deleteOneById
-    })
-    this.PUT({
-      startWith: '/addImage',
-      func: CourtController.addImage,
-      middlewares: [multer.getUpload().single('image')]
-    })
-    this.PUT({
-      startWith: '/updateOne',
-      func: CourtController.updateOne,
-      middlewares: [CourtsMiddleware.updateOneValidate]
-    })
-    this.DELETE({
-      startWith: '/deleteImage',
-      func: CourtController.deleteImage
-    })
+    this.router.get(COURTS_ENDPOINTS.GET_ALL, CourtController.getAll)
+
+    this.router.post(
+      COURTS_ENDPOINTS.CREATE,
+      multer.getUpload().single('image'),
+      CourtsMiddleware.createValidate,
+      CourtController.createOne
+    )
+    this.router.delete(COURTS_ENDPOINTS.DELETE, CourtController.deleteOneById)
+
+    this.router.delete(
+      COURTS_ENDPOINTS.ADD_IMAGE,
+      multer.getUpload().single('image'),
+      CourtController.addImage
+    )
+    this.router.put(
+      COURTS_ENDPOINTS.UPDATE,
+      CourtsMiddleware.updateOneValidate,
+      CourtController.updateOne
+    )
+    this.router.delete(
+      COURTS_ENDPOINTS.DELETE_IMAGE,
+      CourtController.deleteImage
+    )
   }
 }

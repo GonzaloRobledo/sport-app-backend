@@ -41,7 +41,7 @@ export class CourtController {
   }
 
   public static async deleteOneById (req: Request, res: Response) {
-    const id: any = req.query.id
+    const { id } = req.params
 
     if (!id) return res.send({ ok: false, error: 'Id is required' })
 
@@ -134,11 +134,14 @@ export class CourtController {
 
   public static async updateOne (req: Request, res: Response) {
     try {
-      console.log(req.body)
+      const { id } = req.params
 
-      const { id, ...data } = req.body
+      if (!id) return res.send({ ok: false, error: 'Id is required' })
 
-      const response = await CourtsModel.updateOne({ id, data })
+      if (Object.keys(req.body).length == 0)
+        return { ok: false, error: 'There is not params to edit' }
+
+      const response = await CourtsModel.updateOne({ id, data: req.body })
 
       res.send(response)
     } catch (e) {

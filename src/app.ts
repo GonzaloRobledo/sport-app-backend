@@ -16,8 +16,8 @@ app.use(cookieParser())
 
 /**ROUTES**/
 const FIX = '/api'
-app.use(FIX, new AuthRoute('/auth').router)
-app.use(FIX, new CourtRoute('/courts').router)
+app.use(FIX, new AuthRoute().router)
+app.use(FIX, new CourtRoute().router)
 
 /**======**/
 

@@ -17,14 +17,13 @@ export class CourtValidator {
 
   public static updateOne (data: Partial<CourtType>) {
     const schema = z.object({
-      id: z.string({
-        required_error: 'Id is required'
-      }),
-      name: z
-        .string({
-          required_error: 'Name is required'
-        })
-        .min(3),
+      name: z.optional(
+        z
+          .string({
+            required_error: 'Name is required'
+          })
+          .min(3)
+      ),
       description: z.optional(z.string())
     })
 

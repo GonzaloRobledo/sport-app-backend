@@ -1,32 +1,31 @@
 import { AuthController } from '../controllers/auth.ctrl'
-import { MethodsRoutes } from '../classes/methodRoutes.class'
 import { AuthMiddleware } from '../middlewares/auth/auth.middleware'
 
-export class AuthRoute extends MethodsRoutes {
-  public router = this.rt
+import { Router } from 'express'
+import { AUTH_ENDPOINTS } from './constants'
 
-  public constructor (startRoute: string = '') {
-    super(startRoute)
+export class AuthRoute {
+  public router = Router()
+
+  public constructor () {
     this.manageRoutes()
   }
 
   manageRoutes () {
-    this.POST({
-      startWith: `/login`,
-      func: AuthController.login,
-      middlewares: [AuthMiddleware.loginValidate]
-    })
-
-    this.POST({
-      startWith: '/register',
-      func: AuthController.register,
-      middlewares: [AuthMiddleware.registerValidate]
-    })
-
-    this.GET({
-      startWith: '/verifySession',
-      func: AuthController.verifySession,
-      middlewares: [AuthMiddleware.verifySession]
-    })
+    this.router.post(
+      AUTH_ENDPOINTS.LOGIN,
+      AuthMiddleware.loginValidate,
+      AuthController.login
+    )
+    this.router.post(
+      AUTH_ENDPOINTS.REGISTER,
+      AuthMiddleware.registerValidate,
+      AuthController.register
+    )
+    this.router.get(
+      AUTH_ENDPOINTS.VERIFY_SESSION,
+      AuthMiddleware.verifySession,
+      AuthController.verifySession
+    )
   }
 }
